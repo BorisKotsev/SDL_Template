@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Presenter.h"
+#include "StateManager.h"
 #include "InputManager.h"
-#include "Board.h"
-#include "SoundManager.h" 
+#include "SoundManager.h"
 
 class World
 {
@@ -12,16 +12,15 @@ public:
 	~World();
 
 	Presenter m_presenter;
+	StateManager m_stateManager;
 	InputManager m_inputManager;
-	Board m_board;
 	SoundManager m_soundManager;
 
 	void init();
-	void run(); //Update and Draw
+	void run();
 	void destroy();
 
 	bool isRunning();
-
 private:
-	bool m_running;
+	bool m_isRunning;
 };

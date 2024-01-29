@@ -22,18 +22,26 @@
     <ClInclude Include="..\include\Board.h" />
     <ClInclude Include="..\include\defines.h" />
     <ClInclude Include="..\include\Engine.h" />
+    <ClInclude Include="..\include\Game.h" />
     <ClInclude Include="..\include\InputManager.h" />
     <ClInclude Include="..\include\Presenter.h" />
     <ClInclude Include="..\include\SoundManager.h" />
+    <ClInclude Include="..\include\State.h" />
+    <ClInclude Include="..\include\StateManager.h" />
+    <ClInclude Include="..\include\TitleScreen.h" />
     <ClInclude Include="..\include\World.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Board.cpp" />
     <ClCompile Include="..\src\Engine.cpp" />
+    <ClCompile Include="..\src\Game.cpp" />
     <ClCompile Include="..\src\InputManager.cpp" />
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\Presenter.cpp" />
     <ClCompile Include="..\src\SoundManager.cpp" />
+    <ClCompile Include="..\src\State.cpp" />
+    <ClCompile Include="..\src\StateManager.cpp" />
+    <ClCompile Include="..\src\TitleScreen.cpp" />
     <ClCompile Include="..\src\World.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

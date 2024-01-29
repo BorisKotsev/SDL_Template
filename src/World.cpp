@@ -2,7 +2,7 @@
 
 World::World()
 {
-    m_running = true;
+	m_isRunning = true;
 }
 
 World::~World()
@@ -12,35 +12,30 @@ World::~World()
 
 void World::init()
 {
-    m_presenter.init();
-
-    m_board.init();
-
-    m_soundManager.init();
+	m_soundManager.init();
+	m_presenter.init();
+	m_stateManager.init(GAME_STATE::TITLE_SCREEN);
 }
 
 void World::run()
 {
-    m_presenter.draw();
-    m_inputManager.handleInput();
+	m_inputManager.handleInput();
 
-    m_board.update();
-    m_board.draw();
+	m_stateManager.run();
+
+	m_presenter.draw();
 }
 
 void World::destroy()
 {
-    SDL_DestroyWindow(m_presenter.m_mainWindow);
-    SDL_DestroyRenderer(m_presenter.m_mainRenderer);
+	m_soundManager.destroy();
 
-    m_inputManager.m_keyboardState = NULL;
+	SDL_DestroyRenderer(m_presenter.m_mainRenderer);
 
-    m_board.destroy();
-
-    m_soundManager.destroy();
+	SDL_DestroyWindow(m_presenter.m_mainWindow);
 }
 
 bool World::isRunning()
 {
-    return m_running;
+	return m_isRunning;
 }

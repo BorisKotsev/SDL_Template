@@ -69,6 +69,13 @@ void Presenter::improveRenderer()
 
 	world.m_inputManager.setMouseMultiply(mouseMultiply);
 
+	// Initialize joystick multiplier
+	float2 joystickMultiply;
+	joystickMultiply.x = (float)m_SCREEN_WIDTH / 32767.0f; 
+	joystickMultiply.y = (float)m_SCREEN_HEIGHT / 32767.0f;
+
+	world.m_inputManager.setJoystickMultiply(joystickMultiply);
+
 	SDL_RenderSetLogicalSize(m_mainRenderer, m_SCREEN_WIDTH, m_SCREEN_HEIGHT);
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 }

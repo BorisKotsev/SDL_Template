@@ -10,9 +10,12 @@ SDL_Texture* LoadTexture(string imgPath, SDL_Renderer* renderer)
 
 	if (texture == nullptr)
 	{
+		cout << "ERROR IN LOADING PHOTO WITH PATH" << tmpImg;
+
 		tmpImg = "img\\Null.bmp";
 
 		loadingSurface = SDL_LoadBMP(tmpImg.c_str());
+
 
 		texture = SDL_CreateTextureFromSurface(renderer, loadingSurface);
 	}

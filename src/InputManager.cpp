@@ -2,26 +2,12 @@
 
 bool InputManager::m_mouseIsPressed = bool();
 int2 InputManager::m_mouseCoor = int2();
-int2 InputManager::m_joystickCoor = int2();
+float2 InputManager::m_joystickCoor = float2();
 const Uint8* InputManager::m_keyboardState = nullptr;
+bool InputManager::m_joystickIsPressed = bool();
 
 InputManager::InputManager() 
 {
-    if (SDL_NumJoysticks() > 0) 
-    {
-        m_joystick = SDL_JoystickOpen(0);
-        if (m_joystick == nullptr) 
-        {
-            // Handle error
-        }
-    }
-    else {
-        m_joystick = nullptr;
-    }
-
-    // Initialize joystick coordinates and multiplier
-    m_joystickCoor = { 0, 0 };
-    m_joystickMultiply = { 1.0f, 1.0f };
 }
 
 InputManager::~InputManager() 
@@ -44,9 +30,25 @@ void InputManager::setJoystickMultiply(float2 multiplier)
     m_joystickMultiply.y = multiplier.y;
 }
 
+void InputManager::init()
+{
+    if (SDL_NumJoysticks() > 0)
+    {
+        m_joystick = SDL_JoystickOpen(0);
+        if (m_joystick == nullptr)
+        {
+            cout << "Error here \n ";
+        }
+    }
+    else {
+        m_joystick = nullptr;
+    }
+}
+
 void InputManager::handleInput() 
 {
     m_mouseIsPressed = false;
+    m_joystickIsPressed = false;
 
     while (SDL_PollEvent(&m_event)) 
     {
@@ -69,9 +71,6 @@ void InputManager::handleInput()
         case SDL_JOYBUTTONDOWN:
             handleJoystickButtonDown(m_event.jbutton);
             break;
-        case SDL_JOYBUTTONUP:
-            handleJoystickButtonUp(m_event.jbutton);
-            break;
         }
     }
     m_keyboardState = SDL_GetKeyboardState(NULL);
@@ -79,42 +78,53 @@ void InputManager::handleInput()
 
 void InputManager::handleJoystickAxisMotion(const SDL_JoyAxisEvent& event) 
 {
-    // Axis motion ranges from -32768 to 32767
-    // Normalize to -1.0 to 1.0 and apply multiplier
-
     const float MAX_JOYSTICK_VALUE = 32767.0f;
 
     if (event.axis == 0) // X-axis motion
     { 
-        float normalizedValue = event.value / MAX_JOYSTICK_VALUE;
-        m_joystickCoor.x = static_cast<int>(normalizedValue * m_joystickMultiply.x);
+        if (event.value < -8000 || event.value > 8000)
+        {
+            float normalizedValue = event.value / MAX_JOYSTICK_VALUE;
+            m_joystickCoor.x = static_cast<float>(normalizedValue * m_joystickMultiply.x);
+        }
+        else
+        {
+            m_joystickCoor.x = 0;
+        }
     }
     else if (event.axis == 1) // Y-axis motion
     { 
-        float normalizedValue = event.value / MAX_JOYSTICK_VALUE;
-        m_joystickCoor.y = static_cast<int>(normalizedValue * m_joystickMultiply.y);
+        if (event.value < -8000 || event.value > 8000)
+        {
+            float normalizedValue = event.value / MAX_JOYSTICK_VALUE;
+            m_joystickCoor.y = static_cast<float>(normalizedValue * m_joystickMultiply.y);
+            //cout << "Y Axis " << m_joystickCoor.y << endl;
+            //cout << "Y Axis " << event.value << endl;
+        }
+        else
+        {
+            m_joystickCoor.y = 0;
+        }
     }
 }
 
-void InputManager::handleJoystickButtonDown(const SDL_JoyButtonEvent& event) 
+void InputManager::handleJoystickButtonDown(const SDL_JoyButtonEvent& event)
 {
-    if (event.button == 0) 
+    if (event.button == 0)
     {
-        // Button 0 pressed
+        m_joystickIsPressed = true;
     }
 }
 
-void InputManager::handleJoystickButtonUp(const SDL_JoyButtonEvent& event) 
-{
-    if (event.button == 0) 
-    {
-        // Button 0 released
-    }
-}
 
 bool InputManager::isMousePressed() 
 {
     return m_mouseIsPressed;
+}
+
+bool InputManager::isJoystickPressed()
+{
+    return m_joystickIsPressed;
 }
 
 bool isAnyKeyPressed() 

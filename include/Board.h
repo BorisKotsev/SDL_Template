@@ -15,7 +15,4 @@ public:
 
 private:
 	SDL_Texture* m_background;
-
-	Drawable m_player;
-	int num = 0;
 };
